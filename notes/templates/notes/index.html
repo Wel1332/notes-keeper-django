@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes Keeper</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #fafafa; padding: 30px; }
+        .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; }
+        form textarea, form input { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc; }
+        form button { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
+        .note { background: #f9f9f9; padding: 15px; margin-top: 15px; border-radius: 6px; border: 1px solid #ddd; }
+        .note small { color: gray; }
+        .note a { float: right; color: #dc3545; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Notes Keeper</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Note Title" required>
+        <textarea name="content" rows="4" placeholder="Your note..." required></textarea>
+        <button type="submit">Add Note</button>
+    </form>
+
+    {% for note in notes %}
+    <div class="note">
+        <a href="{% url 'delete_note' note.id %}">Delete</a>
+        <h3>{{ note.title }}</h3>
+        <p>{{ note.content }}</p>
+        <small>{{ note.created }}</small>
+    </div>
+    {% empty %}
+    <p>No notes yet.</p>
+    {% endfor %}
+</div>
+</body>
+</html>
